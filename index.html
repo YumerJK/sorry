@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Özür Dilerim...</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    
+    body {
+      min-height:100vh;
+      background: #0f172a;
+      background: radial-gradient(circle at center, #1e293b 0%, #080c14 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.2;
+      animation: twinkle var(--duration) infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { transform: scale(1); opacity: 0.2; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 320px;
+      padding: 30px 20px 80px;
+      background: rgba(30, 41, 59, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 30px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      animation: pop 0.6s cubic-bezier(0.17, 0.8, 0.4, 1.2);
+    }
+
+    @keyframes pop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    
+    .sad-emoji { font-size: 4rem; margin-bottom: 15px; display: block; }
+    
+    h1 { font-size: 1.6rem; color: #fb7185; margin-bottom: 15px; font-weight: 800; }
+    
+    .message { font-size: 1rem; line-height: 1.6; color: #cbd5e1; margin-bottom: 15px; }
+
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      min-height: 140px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #yesBtn {
+      background: #10b981;
+      color: white;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      position: relative;
+      z-index: 20;
+    }
+
+    #noBtn {
+      background: #e74c3c;
+      color: white;
+      position: absolute;
+      transition: all 0.12s ease-out;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+    }
+    
+    .signature-tag {
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      background: rgba(251, 113, 133, 0.15);
+      color: #fb7185;
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 6px 14px;
+      border-radius: 30px;
+      border: 1px solid rgba(251, 113, 133, 0.3);
+      transform: rotate(-5deg);
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="star-container"></div>
+
+  <div class="container">
+    <div class="sad-emoji">😔</div>
+    <h1>Özür Dilerim</h1>
+    
+    <div class="message">
+      Seni dinlemediğim için özür dilerim.<br><br>
+      Sen benim en yakın arkadaşımsın.<br>
+      Sana öyle davrandığım için üzgünüm;<br><br>
+      Senle öyle konuşmak istemezdim.<br>
+      Özür dilerim,<br>
+      Lütfen affet beni...
+    </div>
+
+    <p style="color:white; font-weight:bold; margin-top: 10px;">Affedecek misin?</p>
+
+    <div class="buttons">
+      <button id="yesBtn" onclick="celebrate()">Affettim! 🤝</button>
+      <button id="noBtn">Hayır 😤</button>
+    </div>
+
+    <div class="signature-tag">— Eşşek yufus</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    const starContainer = document.getElementById('star-container');
+    for (let i = 0; i < 40; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + 'vw';
+      star.style.top = Math.random() * 100 + 'vh';
+      const size = Math.random() * 3 + 'px';
+      star.style.width = size;
+      star.style.height = size;
+      star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+      starContainer.appendChild(star);
+    }
+
+    const noBtn = document.getElementById('noBtn');
+    const buttonsDiv = document.querySelector('.buttons');
+    
+    function move() {
+      const rect = buttonsDiv.getBoundingClientRect();
+      const maxX = rect.width - noBtn.offsetWidth;
+      const maxY = rect.height - noBtn.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
+      noBtn.style.transform = 'none';
+    }
+    
+    noBtn.style.left = '50%';
+    noBtn.style.top = '85px';
+    noBtn.style.transform = 'translateX(-50%)';
+    
+    noBtn.addEventListener('mouseover', move);
+    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); move(); });
+    noBtn.addEventListener('click', (e) => { e.preventDefault(); move(); });
+
+    function celebrate() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#ffffff', '#fb7185', '#ffd700'],
+        shapes: ['star']
+      });
+
+      const btn = document.getElementById('yesBtn');
+      // Adamsın yerine Harikasın! yaptık
+      btn.innerHTML = "Harikasın! ✨";
+      btn.style.background = "#fb7185";
+      
+      setTimeout(() => {
+        window.location = 'instagram://';
+        setTimeout(() => { window.location = 'https://www.instagram.com/'; }, 1000);
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html> 
